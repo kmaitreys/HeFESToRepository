@@ -1,9 +1,8 @@
-# Compiles HeFESTo
-
 CFT     = gfortran
 LDR     = gfortran
 FFLAGS  = -ffixed-line-length-132 -fimplicit-none -fno-automatic -Ofast -g -fcheck=all -Wall -fbacktrace
-#  Link to NLOPT library which can be downloaded and installed from https://nlopt.readthedocs.io/en/latest/
+
+# Link to NLOPT library
 LFLAGS = -lnlopt -lm
 
 COMMAND = main
@@ -40,12 +39,11 @@ Ftotsubw.o pressurew.o volumew.o thermw.o nlmin_vw.o myvolw.o \
 calpre.o evai95_lps.o fdescr.o ilnobl.o lejust.o calsct.o ifnobl.o apxsct.o gausse.o videal.o vmurnaghan.o \
 volumeh.o thermh.o Ftotsubh.o splie2.o splin2.o spline.o splint.o hsetup.o eoswater.o icebcc.o
 
-#  Get LAPACK and BLAS
-LIB1 = -framework Accelerate
-LIB2 = -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+# Libraries and paths for LAPACK, BLAS, and NLOPT
+LIB1 = -llapack
+LIB2 = -lblas
 LIB3 = -I/usr/local/include
-LIB4 = -L /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
-LIB5 = -L /usr/local/lib
+LIB5 = -L/usr/local/lib
 
 $(COMMAND): $(MAIN) $(SUBS)
-	$(LDR) $(LFLAGS) -o $(COMMAND) -static-libgfortran -static-libgcc $(MAIN) $(SUBS) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5)
+	$(LDR) $(MAIN) $(SUBS) -o $(COMMAND) $(LIB1) $(LIB2) $(LIB3) $(LIB5) $(LFLAGS)
